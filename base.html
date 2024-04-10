@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+
+        {% endblock %}
+    </title>
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <script type="text/javascript" src={% static "script.js" %}></script>
+</head>
+<body>
+<main>
+    <header>
+        <div class="nav_container">
+            <div class="nav">
+                <div class="left">
+                    <a class="{% if request.resolver_match.url_name == 'choose_test' %} active {% endif %}"
+                       href="{% url 'quality_tests_app:choose_test' %}">Квалификационные тесты</a>
+                    {#                    <a class="{% if request.resolver_match.url_name == 'choose_test' %}active{% endif %}"#}
+                    {#                       href="{% url 'quality_tests_app:choose_test' %}">Демонстрационные тесты</a>#}
+                </div>
+                <div class="right">
+                    <a class="{% if request.resolver_match.url_name == 'choose_demo_test' %} active {% endif %}"
+                       href="{% url 'quality_tests_app:choose_demo_test' %}">Демонстрационные тесты</a>
+                    <a class="{% if request.resolver_match.url_name == 'choose_test' %} active {% endif %}"
+                       href="{% url 'quality_tests_app:choose_test' %}">Квалификационные тесты</a>
+                    <a class="{% if request.resolver_match.url_name == 'about' %} active {% endif %}"
+                       href="{% url 'quality_tests_app:about' %}">О приложении </a>
+                    <div class="enter_escape">
+                        {% if not request.user.is_authenticated %}
+                            <p>
+                                <a class="{% if request.resolver_match.url_name == 'auth' %}active{% endif %}"
+                                   href="{% url 'quality_tests_app:auth' %}">Вход</a>
+                                {#                                <a class="{% if request.resolver_match.url_name == 'reg' %}active{% endif %}"#}
+                                {#                                   href="{% url 'quality_tests_app:reg' %}">Регистрация</a>#}
+                            </p>
+                        {% else %}
+                            <div class="enter_escape">
+                                {#                            href="{% url 'quality_tests_app:logout' %}"#}
+                                <a onclick="escapeClick()"> Выход ({{ request.user }})</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+        <div class="pop_up">
+            <div class="pop_up-content form_container">
+                <span class="close-button" onclick="closePopUp()">&times;</span>
+                <h2>Вы нажали на выход с сайта!</h2>
+                <h3>Уверены что хотите продолжить?</h3>
+                <div class="enter_escape">
+                    <a href="{% url 'quality_tests_app:logout' %}"> Выход ({{ request.user }})</a>
+                </div>
+            </div>
+        </div>
+
+        {% if messages %}
+            <div class="per80">
+                {% for message in messages %}
+                    <div class="err_container">
+                        <h3>{{ message }}</h3>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if input_form.errors %}
+            <div class="per80">
+                <div class="err_container">
+                    {{ field.errors }}
+                    {% for field in input_form %}
+                        {% for error in field.errors %}
+                            <h3>{{ error|escape }}</h3>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in input_form.non_field_errors %}
+                        <h3>{{ error|escape }}</h3>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+        {% block after_body %}
+        {% endblock %}
+    </div>
+</main>
+<footer>
+    <div class="title">
+        &copy; 2023 Квалификационные тесты
+    </div>
+</footer>
+<script type="text/javascript" src={% static "pop_up_script.js" %}></script>
+</body>
+</html>

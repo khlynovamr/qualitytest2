@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="per80">
+        <h2 class="block_header">Квалификационные тесты</h2>
+    </div>
+    <div class="per80 three_in_row_container flip_cards_container">
+        {% for test in quality_tests %}
+            <a class="three_in_row_item"
+               href="{% url 'quality_tests_app:question' test=test.id num=1 %}">
+                <div class="flip_card">
+                    <div class="flip_card_inner">
+                        <div class="flip_card_front card_with_parts">
+                            <div class="card_top">
+                                <p class="test_name">{{ test.name }}</p>
+                                <br>
+                                <p>Тема теста: {{ test.topic }}</p>
+                            </div>
+                            <div class="card_bottom">
+                                {% if test.description %}
+                                    <p>
+                                        {{ test.description }}
+                                    </p>
+                                {% else %}
+                                    <p>
+                                        Нет описания
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="flip_card_back">
+                            <h2>Число вопросов: {{ test.questions_num }}</h2>
+                            <br>
+                            <h3>Нажмите на карточку для перехода к прохождению теста</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="per80 three_in_row_container hidden additional_cards_container">
+        {% for test in quality_tests %}
+            <a class="three_in_row_item"
+               href="{% url 'quality_tests_app:question' test=test.id num=1 %}">
+                <div class="test_card card_with_parts">
+                    <div class="card_top">
+                        <p class="test_name">{{ test.name }}</p>
+                        <br>
+                        <p>Тема теста: {{ test.topic }}</p>
+                    </div>
+                    <div class="card_bottom">
+                        {% if test.description %}
+                            <p>
+                                {{ test.description }}
+                            </p>
+                        {% else %}
+                            <p>
+                                Нет описания
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
