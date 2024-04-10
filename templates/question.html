@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="per80">
+        <div class="card">
+            <h3>Вопрос {{ num }}</h3>
+            <div class="highlighted_text">
+                <p>{{ question.question_text }}</p>
+            </div>
+            <form action="{% url 'quality_tests_app:question' test=test num=new_num %}" method="post">
+                {% csrf_token %}
+                {% for answer in answers %}
+                    <div>
+                        {% if multiple_answers %}
+                            <label class="checkbox_container">{{ answer.text }}
+                                <input name="answer" id="answer{{ answer.id }}" type="checkbox" value="{{ answer.id }}">
+                                <span class="checkmark"></span>
+                            </label>
+                        {% else %}
+                            <label class="checkbox_container">{{ answer.text }}
+                                <input name="answer" id="answer{{ answer.id }}" type="radio" value="{{ answer.id }}">
+                                <span class="checkmark checkmark_radio"></span>
+                            </label>
+                        {% endif %}
+                        {#                    <label for="answer{{ answer.id }}">{{ answer.text }}</label>#}
+                    </div>
+                {% endfor %}
+                {% if not is_last_question %}
+                    <input class="submit_button" type="submit" value="Следующий вопрос">
+                {% else %}
+                    <input class="submit_button" type="submit" value="Завершить прохождение теста">
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

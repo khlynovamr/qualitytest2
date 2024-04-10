@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="per80">
+        <div class="card">
+            {% if message %}
+                <h2>{{ message }}</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
